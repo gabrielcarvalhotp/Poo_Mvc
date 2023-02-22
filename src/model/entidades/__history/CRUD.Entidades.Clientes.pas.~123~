@@ -1,0 +1,157 @@
+unit CRUD.Entidades.Clientes;
+
+interface
+
+uses
+  Data.DB,
+  CRUD.Interfaces.Clientes, 
+  Crud.Interfaces.Conexao, CRUD.Interfaces.IdNome;
+
+type
+
+  TClientes = class(TInterfacedObject, iClientes, iPesquisaQuery)
+  private
+    FIdNome : IIdNome<iClientes>;
+    FQuery: iQuery;
+    FEmail: string;
+    FDataCadastro: TDateTime;
+    FId: integer;
+    FNome: string;
+    FEndereco: string;
+    FTelefone: string;
+  public
+    constructor Create;
+    destructor Destroy; override;
+    class function New: iClientes;
+    function Endereco(aValue: string): iClientes; overload;
+    function Endereco: string; overload;
+    function Telefone(aValue: string): iClientes; overload;
+    function Telefone: string; overload;
+    function Email(aValue: string): iClientes; overload;
+    function Email: string; overload;
+    function DataCadastro(aValue: TDateTime): iClientes; overload;
+    function DataCadastro: TDateTime; overload;
+    function Pesquisa : iPesquisaQuery;
+    function IdNome : iIdNome<iClientes>;
+
+    function Todos: iPesquisaQuery;
+    function Registro(Field: String; aValue: string): iPesquisaQuery;
+    function Codigo(Field: String; aValue: string): iPesquisaQuery;
+    function DataSet(DataSource: TDataSource): iPesquisaQuery;
+    function FDQuery: iQuery;
+  end;
+
+implementation
+
+uses
+  CRUD.Controller.FactoryQuery, System.SysUtils;
+
+{ TClientes }
+
+constructor TClientes.Create;
+begin
+  FQuery := TControllerFactoryQuery.New.Query(nil);
+  FIdNome := IIdNome<iClientes>.new(self)
+end;
+
+destructor TClientes.Destroy;
+begin
+  inherited;
+end;
+
+class function TClientes.New: iClientes;
+begin
+  result := self.Create;
+end;
+
+function TClientes.Registro(Field: String; aValue : string): iPesquisaQuery;
+begin
+  result := self;
+    FQuery.Close
+           .Clear
+            .SQL(' SELECT * FROM clientes ')
+             .Where(Field, aValue)
+              .Active;
+end;
+
+function TClientes.Codigo(Field, aValue: string): iPesquisaQuery;
+begin
+  result := self;
+    FQuery.Close
+           .Clear
+            .SQL(' SELECT * FROM clientes ')
+             .Whereid(Field, aValue)
+              .Active;
+end;
+
+function TClientes.Pesquisa: iPesquisaQuery;
+begin
+  result := self;
+end;
+
+function TClientes.Todos: iPesquisaQuery;
+begin
+  result := self;
+  FQuery.Close
+         .Clear
+          .SQL(' SELECT * FROM clientes ')
+           .Active;
+         
+end;
+
+function TClientes.DataCadastro(aValue: TDateTime): iClientes;
+begin
+  result := self;
+  FDataCadastro := aValue
+end;
+
+function TClientes.DataCadastro: TDateTime;
+begin
+  result := FDataCadastro;
+end;
+
+function TClientes.DataSet(DataSource: TDataSource): iPesquisaQuery;
+begin
+  result := self;
+  DataSource.DataSet := FQuery.DataSet;
+end;
+
+function TClientes.Email: string;
+begin
+  result := FEmail;
+end;
+
+function TClientes.Email(aValue: string): iClientes;
+begin
+  result := self;
+  FEmail := aValue;
+end;
+
+function TClientes.Endereco: string;
+begin
+  result := FEndereco;
+end;
+
+function TClientes.FDQuery: iQuery;
+begin
+  result := FQuery;
+end;
+
+function TClientes.Endereco(aValue: string): iClientes;
+begin
+  result := self;
+  FEndereco := aValue;
+end;
+
+function TClientes.Telefone(aValue: string): iClientes;
+begin
+  result := self;
+  FTelefone := aValue;
+end;
+
+function TClientes.Telefone: string;
+begin
+  result := FTelefone;
+end;
+
+end.

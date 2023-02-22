@@ -1,0 +1,45 @@
+unit CRUD.Controller.FactoryQuery;
+
+interface
+
+uses
+ CRUD.Interfaces.Conexao;
+
+Type
+  TControllerFactoryQuery = class(TInterfacedObject, iFactoryQuery)
+  private
+  public
+    constructor Create;
+    destructor Destroy; override;
+    class function New: iFactoryQuery;
+    function Query(Connection: iConexao): iQuery;
+  end;
+
+implementation
+
+uses
+  CRUD.Model.Query;
+{ TControllerFactoryQuery }
+
+constructor TControllerFactoryQuery.Create;
+begin
+
+end;
+
+destructor TControllerFactoryQuery.Destroy;
+begin
+
+  inherited;
+end;
+
+class function TControllerFactoryQuery.New: iFactoryQuery;
+begin
+  Result := Self.Create;
+end;
+
+function TControllerFactoryQuery.Query(Connection: iConexao): iQuery;
+begin
+  Result := TQuery.New(Connection);
+end;
+
+end.

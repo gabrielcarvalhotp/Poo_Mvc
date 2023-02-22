@@ -1,0 +1,21 @@
+unit CRUD.Model.Interfaces;
+
+interface
+
+uses
+  Data.DB;
+
+type
+  iConexao = interface
+    ['{B561509C-AC61-4F7F-8697-8D7D9B429685}']
+    function Conectar: TCustomConnection;
+  end;
+
+  iQuery = interface
+    ['{53F3B81B-486A-49BB-AAB0-FDED0EBC6DE3}']
+    
+  end;
+
+implementation
+
+end.

@@ -1,0 +1,13 @@
+object DMProdutos: TDMProdutos
+  OldCreateOrder = False
+  Height = 150
+  Width = 215
+  object DataSource1: TDataSource
+    Left = 40
+    Top = 72
+  end
+  object FDQuery1: TFDQuery
+    Left = 40
+    Top = 16
+  end
+end

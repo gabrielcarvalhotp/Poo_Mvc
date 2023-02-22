@@ -1,0 +1,69 @@
+unit CRUD.Model.Interfaces;
+
+interface
+
+uses
+  Data.DB, Vcl.StdCtrls;
+
+type
+  
+  iClearEdit = interface
+    ['{C8A3FE83-71A2-4956-919F-502B66FA281B}']
+    function ClearEdit(aValue: TEdit): iClearEdit;
+    function ClearMemo(aValue: TMemo): iClearEdit;
+  end;
+
+  iConexao = interface
+    ['{B561509C-AC61-4F7F-8697-8D7D9B429685}']
+    function Conectar: TCustomConnection;
+  end;
+
+  iQuery = interface
+    ['{53F3B81B-486A-49BB-AAB0-FDED0EBC6DE3}']
+    function Clear: iQuery;
+    function Where(aColun: string; aValue: string): iQuery;
+    function Whereid(aColun: string; aValue: string): iQuery;
+    function SQL(aValue: string): iQuery;
+    function FieldByName(aValue: string): variant;
+    function Close: iQuery;
+    function Active: iQuery;
+    function DataSet: TDataSet;
+  end;
+
+  iClientes = interface
+    ['{9023E66D-3F7D-4409-A2F6-30B2989A2D4D}']
+    function Id(aValue: integer): iClientes; overload;
+    function Id: integer; overload;
+    function Nome(aValue: string): iClientes; overload;
+    function Nome: string; overload;
+    function Endereco(aValue: string): iClientes; overload;
+    function Endereco: string; overload;
+    function Telefone(aValue: string): iClientes; overload;
+    function Telefone: string; overload;
+    function Email(aValue: string): iClientes; overload;
+    function Email: string; overload;
+    function DataCadastro(aValue: TDateTime): iClientes; overload;
+    function DataCadastro: TDateTime; overload;
+
+    function Pesquisar: iClientes;
+    function PesquisarCampo(Field: String; aValue: string): iClientes;
+    function PesquisarId(Field: String; aValue: string): iClientes;
+    function DataSet(DataSource: TDataSource): iClientes;
+    function FDQuery: iQuery;
+  end;
+
+  iDAO = interface
+    ['{2B172E85-CD50-477E-BED1-FE26096E64B7}']
+    procedure CreateCliente(aValue: iClientes);
+    procedure EditCliente(aValue: iClientes);
+    procedure DeleteCliente(aIndex: integer);
+  end;
+
+  iFactoryQuery = interface
+    ['{54395377-D65A-458C-8F1B-764A11A9C070}']
+    function Query(Connection: iConexao): iQuery;
+  end;
+
+implementation
+
+end.

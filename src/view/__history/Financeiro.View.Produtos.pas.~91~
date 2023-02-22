@@ -1,0 +1,164 @@
+unit Financeiro.View.Produtos;
+
+interface
+
+uses
+  Winapi.Windows,
+  Winapi.Messages,
+  System.SysUtils,
+  System.Variants,
+  System.Classes,
+  Vcl.Graphics,
+  Vcl.Controls,
+  Vcl.Forms,
+  Vcl.Dialogs,
+  Data.DB,
+  Vcl.StdCtrls,
+  Vcl.Grids,
+  Vcl.DBGrids,
+  Vcl.Buttons,
+  Vcl.ExtCtrls,
+  Vcl.WinXPanels,
+  Financeiro.View.CadastroPadrao,
+  CRUD.Interfaces.Produtos,
+  CRUD.Interfaces.Utilitarios;
+
+type
+  TFrmCadProdutos = class(TFrmCadPadrao)
+    DSProdutos: TDataSource;
+    CBPesquisa: TComboBox;
+    BitBtn1: TBitBtn;
+    edId: TEdit;
+    Label1: TLabel;
+    Label2: TLabel;
+    edNome: TEdit;
+    Label3: TLabel;
+    edPreco: TEdit;
+    Label4: TLabel;
+    Memo1: TMemo;
+    procedure FormCreate(Sender: TObject);
+    procedure BitBtn1Click(Sender: TObject);
+    procedure BitBtnIncluirPesquisaClick(Sender: TObject);
+    procedure BitBtnAlterarPesquisaClick(Sender: TObject);
+    procedure BitBtnSalvarCadastroClick(Sender: TObject);
+    procedure BitBtnFecharCadastroClick(Sender: TObject);
+    procedure BitBtnExcluirPesquisaClick(Sender: TObject);
+  private
+    { Private declarations }
+    FProdutos: iProdutos;
+    FStatus: string;
+    procedure clearComponents;
+  public
+    { Public declarations }
+  end;
+
+implementation
+
+uses
+  CRUD.Controller.Produtos, CRUD.Controller.Utilitarios;
+
+{$R *.dfm}
+
+procedure TFrmCadProdutos.BitBtn1Click(Sender: TObject);
+begin
+  inherited;
+  if ((EditPesquisar.Text = '') or (CBPesquisa.ItemIndex = 0)) then
+    FProdutos.Pesquisa.Todos.DataSet(DSProdutos)
+
+  else if CBPesquisa.Text = 'ID' then
+    FProdutos
+             .Pesquisa
+              .Codigo(CBPesquisa.Text, EditPesquisar.Text)
+               .DataSet(DSProdutos)
+
+  else
+    FProdutos
+             .Pesquisa
+              .Registro(CBPesquisa.Text, EditPesquisar.Text)
+               .DataSet(DSProdutos)
+end;
+
+procedure TFrmCadProdutos.BitBtnAlterarPesquisaClick(Sender: TObject);
+begin
+  inherited;
+       FStatus := TUtilitarios.Edit;
+     edId.Text := FProdutos.FDQuery.FieldByName('ID');
+   edNome.Text := FProdutos.FDQuery.FieldByName('NOME');
+  edPreco.Text := FProdutos.FDQuery.FieldByName('PRECO');
+    Memo1.Text := FProdutos.FDQuery.FieldByName('DESCRICAO');
+end;
+
+procedure TFrmCadProdutos.BitBtnExcluirPesquisaClick(Sender: TObject);
+var 
+  id : integer;
+begin
+  inherited;
+  if MessageDlg('Deseja deletar?', mtConfirmation, [mbYes, mbNo], 0) = mrYes then
+  begin
+    id := FProdutos.Pesquisa.FDQuery.FieldByName('ID');
+    TControllerProdutos.DAO.DeleteProduto(id);
+
+    CardPanelPrincipal.ActiveCard := CardPesquisa;
+    FProdutos.Pesquisa.Todos.DataSet(DSProdutos);
+    clearComponents;
+  end;
+end;
+
+procedure TFrmCadProdutos.BitBtnFecharCadastroClick(Sender: TObject);
+begin
+  inherited;
+  clearComponents;
+end;
+
+procedure TFrmCadProdutos.BitBtnIncluirPesquisaClick(Sender: TObject);
+begin
+  inherited;
+  FStatus := TUtilitarios.insert;
+end;
+
+procedure TFrmCadProdutos.BitBtnSalvarCadastroClick(Sender: TObject);
+begin
+  inherited;
+  if MessageDlg('Deseja salvar?', mtConfirmation, [mbYes, mbNo], 0) = mrYes
+  then
+  begin
+    FProdutos.Preco(StrToFloat(edPreco.Text))
+              .Descricao(Memo1.Text)
+               .DataCadastro(now)
+                .IdNome.Nome(edNome.Text);
+
+    if FStatus = TUtilitarios.insert then
+      TControllerProdutos.DAO.CreateProduto(FProdutos)
+    
+    else if FStatus = TUtilitarios.Edit then
+      begin
+        FProdutos.IdNome.Id(edId.Text);
+        TControllerProdutos.DAO.EditProduto(FProdutos);
+      end;
+      
+
+    CardPanelPrincipal.ActiveCard := CardPesquisa;
+    FProdutos.Pesquisa.Todos.DataSet(DSProdutos);
+    clearComponents;
+  end;
+  
+end;
+
+procedure TFrmCadProdutos.clearComponents;
+begin
+  TUtilitarios
+              .ClearComponentes
+               .ClearEdit(edid)
+                .ClearEdit(edNome)
+                 .ClearEdit(edPreco)
+                  .ClearMemo(Memo1);
+end;
+
+procedure TFrmCadProdutos.FormCreate(Sender: TObject);
+begin
+  inherited;
+  FProdutos := TControllerProdutos.CreateProduto;
+  FProdutos.Pesquisa.Todos.DataSet(DSProdutos);
+end;
+
+end.

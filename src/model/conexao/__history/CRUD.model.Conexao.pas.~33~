@@ -1,0 +1,50 @@
+unit CRUD.model.Conexao;
+
+interface
+
+uses
+  CRUD.model.Interfaces, Data.DB, FireDAC.Comp.Client;
+
+type
+  TConexao = class(TInterfacedObject, iConexao)
+  private
+    FConnection : TFDConnection;
+  public
+    { public }
+    constructor Create;
+    destructor Destroy; override;
+    class function New: iConexao;
+    function Conectar: TCustomConnection;
+  end;
+
+implementation
+
+{ TConexao }
+
+function TConexao.Conectar: TCustomConnection;
+begin
+  result := FConnection;
+end;
+
+constructor TConexao.Create;
+begin
+  FConnection := TFDConnection.Create(nil);
+  FConnection.DriverName := 'FB';
+  FConnection.Params.Database := 'C:\DB\DATABASETESTES.FDB';
+  FConnection.Params.UserName := 'SYSDBA';
+  FConnection.Params.Password := 'masterkey';
+  FConnection.Connected := true;  -
+end;
+
+destructor TConexao.Destroy;
+begin
+  inherited;
+  FConnection.DisposeOf;
+end;
+
+class function TConexao.New: iConexao;
+begin
+  result := self.Create;
+end;
+
+end.

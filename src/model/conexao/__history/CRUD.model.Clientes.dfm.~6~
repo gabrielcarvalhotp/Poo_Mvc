@@ -1,0 +1,18 @@
+object DMClientes: TDMClientes
+  OldCreateOrder = False
+  Height = 270
+  Width = 395
+  object FDQClientes: TFDQuery
+    Active = True
+    Connection = DMConexao.FDConnection
+    SQL.Strings = (
+      'select * from clientes')
+    Left = 24
+    Top = 16
+  end
+  object DSClientes: TDataSource
+    DataSet = FDQClientes
+    Left = 24
+    Top = 80
+  end
+end

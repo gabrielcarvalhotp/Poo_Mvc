@@ -1,0 +1,71 @@
+unit CRUD.Entidades.IdNome;
+
+interface
+
+uses
+  CRUD.Interfaces.IdNome;
+
+type
+  TIdNome<T: iinterface> = class(TInterfacedObject, iIdNome<T>)
+  private
+    [Weak]
+    FParent: iinterface;
+    Fid: integer;
+    FNome: string;
+  public
+    constructor Create(Parent: T);
+    destructor Destroy; override;
+    class function New(Parent: T): iIdNome<T>;
+    function Id(aValue: string): iIdNome<T>; overload;
+    function Id: integer; overload;
+    function Nome(aValue: string): iIdNome<T>; overload;
+    function Nome: string; overload;
+    function &End: iInterface;
+  end;
+
+implementation
+
+{ TIdNome<T> }
+
+constructor TIdNome<T>.Create(Parent: T);
+begin
+  FParent := Parent;
+end;
+
+destructor TIdNome<T>.Destroy;
+begin
+
+  inherited;
+end;
+
+function TIdNome<T>.&End: iInterface;
+begin
+  Result := FParent;
+end;
+
+function TIdNome<T>.Id(aValue: string): iIdNome<T>;
+begin
+
+end;
+
+function TIdNome<T>.Id: integer;
+begin
+
+end;
+
+class function TIdNome<T>.New(Parent: T): iIdNome<T>;
+begin
+
+end;
+
+function TIdNome<T>.Nome(aValue: string): iIdNome<T>;
+begin
+
+end;
+
+function TIdNome<T>.Nome: string;
+begin
+
+end;
+
+end.

@@ -1,0 +1,13 @@
+unit CRUD.model.Status;
+
+interface
+
+type
+  TStatus = class
+  const insert = 'dsInsert';
+  constedit = 'dsEdit';
+  end;
+
+implementation
+
+end.

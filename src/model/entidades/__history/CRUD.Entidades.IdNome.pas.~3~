@@ -1,0 +1,15 @@
+unit CRUD.Entidades.IdNome;
+
+interface
+
+uses
+  CRUD.Interfaces.IdNome;
+
+type
+  TIdNome<T: iinterface> = class(TInterfacedObject, iIdNome<T>)
+
+  end;
+
+implementation
+
+end.

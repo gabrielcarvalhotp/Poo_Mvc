@@ -1,0 +1,24 @@
+unit CRUD.Entidades.IdNome;
+
+interface
+
+uses
+  CRUD.Interfaces.IdNome;
+
+type
+  TIdNome<T: iinterface> = class(TInterfacedObject, iIdNome<T>)
+  private
+    [Weak]
+    FParent: iinterface;
+    Fid: integer;
+    FNome: string;
+  public
+    constructor Create(Parent: T);
+    destructor Destroy; override;
+    class function New(Parent: T): iEndereco<T>;
+
+  end;
+
+implementation
+
+end.

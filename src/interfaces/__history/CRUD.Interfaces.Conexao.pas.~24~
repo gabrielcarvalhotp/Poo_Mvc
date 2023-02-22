@@ -1,0 +1,42 @@
+unit CRUD.Interfaces.Conexao;
+
+interface
+
+uses
+  Data.DB;
+
+type
+  iConexao = interface
+    ['{B561509C-AC61-4F7F-8697-8D7D9B429685}']
+    function Conectar: TCustomConnection;
+  end;
+
+  iQuery = interface
+    ['{53F3B81B-486A-49BB-AAB0-FDED0EBC6DE3}']
+    function Clear: iQuery;
+    function Where(aColun: string; aValue: string): iQuery;
+    function Whereid(aColun: string; aValue: string): iQuery;
+    function SQL(aValue: string): iQuery;
+    function FieldByName(aValue: string): variant;
+    function Close: iQuery;
+    function Active: iQuery;
+    function DataSet: TDataSet;
+    function FDQuery: iQuery;
+  end;
+
+  iFactoryQuery = interface
+    ['{54395377-D65A-458C-8F1B-764A11A9C070}']
+    function Query(Connection: iConexao): iQuery;
+  end;
+
+  iPesquisaQuery = interface
+    ['{2E4223B2-74E7-417E-B741-CC9C08A122C3}']
+    function Todos: iPesquisaQuery;
+    function Registro(Field: String; aValue: string): iPesquisaQuery;
+    function Codigo(Field: String; aValue: string): iPesquisaQuery;
+    function DataSet(DataSource: TDataSource): iPesquisaQuery;
+  end;
+
+implementation
+
+end.

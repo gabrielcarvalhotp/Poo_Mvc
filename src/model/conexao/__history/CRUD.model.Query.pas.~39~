@@ -1,0 +1,93 @@
+unit CRUD.model.Query;
+
+interface
+
+uses
+  CRUD.model.Interfaces, FireDAC.Comp.Client, Data.DB, FireDAC.DApt,
+  FireDAC.Stan.Def;
+
+type
+  TQuery = class(TInterfacedObject, iQuery)
+  private
+    FParent: iConexao;
+    FQuery: TFDQuery;
+  public
+    { public }
+    constructor Create(parent: iConexao);
+    destructor Destroy; override;
+    class function New(parent: iConexao): iQuery;
+    function Close: iQuery;
+    function Clear: iQuery;
+    function Where(aColun: string; aValue: string): iQuery;
+    function Whereid(aColun: string; aValue: string): iQuery;
+    function SQL(aValue: string): iQuery;
+    function Active: iQuery;
+    function DataSet: TDataSet;
+  end;
+
+implementation
+
+uses
+  System.SysUtils, CRUD.model.Conexao, Vcl.Dialogs;
+
+{ TQuery }
+
+function TQuery.Active: iQuery;
+begin
+  result := self;
+  FQuery.Active := true;
+end;
+
+function TQuery.Clear: iQuery;
+begin
+  result := self;
+  FQuery.SQL.Clear;
+end;
+
+function TQuery.Close: iQuery;
+begin
+  result := self;
+  FQuery.Close;
+end;
+
+constructor TQuery.Create(parent: iConexao);
+begin
+  if parent = nil then
+    FParent := TConexao.New
+  else
+    FParent := parent;
+
+  FQuery := TFDQuery.Create(nil);
+
+  FQuery.Connection := TFDConnection(FParent.Conectar);
+end;
+
+function TQuery.DataSet: TDataSet;
+begin
+  result := FQuery;
+end;
+
+destructor TQuery.Destroy;
+begin
+  inherited;
+  FreeAndNil(FQuery);
+end;
+
+class function TQuery.New(parent: iConexao): iQuery;
+begin
+  result := self.Create(parent);
+end;
+
+function TQuery.SQL(aValue: string): iQuery;
+begin
+  result := self;
+  FQuery.SQL.Add(aValue);
+end;
+
+function TQuery.Where(aColun, aValue: string): iQuery;
+begin
+  result := self;
+  FQuery.SQL.Add('WHERE ' + UpperCase(aColun) + ' LIKE ' + QuotedStr('%' + aValue + '%'));
+end;
+
+end.

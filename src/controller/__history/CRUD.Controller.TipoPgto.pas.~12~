@@ -1,0 +1,33 @@
+unit CRUD.Controller.TipoPgto;
+
+interface
+uses
+  CRUD.Interfaces.IdNome,
+  CRUD.Interfaces.Utilitarios;
+
+type
+  TControllerCliente = class
+  private
+  public
+   class function CriarCliente: iIdNome;
+   class function DAO : iDAOIdNome;
+  end;
+
+implementation
+
+uses
+  CRUD.Entidades.TipoPagamentos, CRUD.DAO.TipoPagamentos;
+
+{ TControllerCliente }
+
+class function TControllerCliente.CriarCliente: iIdNome;
+begin
+  result := TTipoPagamentos.new;
+end;
+
+class function TControllerCliente.DAO: iDAOIdNome;
+begin
+  result := TDAOTipoPGTO.New;
+end;
+
+end.

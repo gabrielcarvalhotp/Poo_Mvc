@@ -1,0 +1,21 @@
+unit CRUD.Entidades.PesquisaQuery;
+
+interface
+
+uses
+  CRUD.Interfaces.Conexao;
+
+type
+  TPesquisaQuery = class(TinterfacedObject, iPesquisaQuery)
+    private
+
+    public
+    constructor Create(aValue : iinterface);
+    destructor Destroy; override;
+    class function New(aValue : iInterface) : iPesquisaQuery;
+    
+  end;
+
+implementation
+
+end.

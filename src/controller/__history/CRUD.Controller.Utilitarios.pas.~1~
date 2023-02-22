@@ -1,0 +1,28 @@
+unit CRUD.Controller.Utilitarios;
+
+interface
+
+Type
+  TUtilitarios = class
+    class function Insert: string;
+    class function Edit: string;
+  end;
+
+implementation
+
+uses
+  CRUD.model.Status;
+
+{ TUtilitarios }
+
+class function TControllerCliente.Edit: string;
+begin
+  result := TStatus.edit;
+end;
+
+class function TControllerCliente.Insert: string;
+begin
+  result := TStatus.insert;
+end;
+
+end.

@@ -1,0 +1,31 @@
+unit CRUD.Interfaces.Produtos;
+
+interface
+
+uses
+  CRUD.Interfaces.Conexao, CRUD.Interfaces.IdNome;
+
+type
+  iProdutos = interface
+    ['{BDBED07A-A118-43A2-A49C-63EF351EA6CD}']
+    function Preco(aValue: double): iProdutos; overload;
+    function Preco: double; overload;
+    function DataCadastro(aValue: TDateTime): iProdutos; overload;
+    function DataCadastro: TDateTime; overload;
+    function Descricao(aValue: string): iProdutos; overload;
+    function Descricao: string; overload;
+    function FDQuery: iQuery;
+    function Pesquisa : iPesquisaQuery;
+    function IdNome : iIdNome<iProdutos>; 
+  end;
+
+  iDAOProdutos = interface
+    ['{20D19A41-84BE-44F6-BDFC-1628204C5C44}']
+    procedure CreateProduto(aValue: iprodutos);
+    procedure EditProduto(aValue: iprodutos);
+    procedure DeleteProduto(aIndex: integer);
+  end;
+
+implementation
+
+end.

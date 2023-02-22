@@ -1,0 +1,21 @@
+unit CRUD.Entidades.IdNome;
+
+interface
+
+uses
+  CRUD.Interfaces.IdNome;
+
+type
+  TIdNome<T: iinterface> = class(TInterfacedObject, iIdNome<T>)
+  private
+  [Weak]
+  FParent : iInterface;
+  Fid : integer;
+  FNome : string;
+  public
+  
+  end;
+
+implementation
+
+end.

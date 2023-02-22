@@ -1,0 +1,103 @@
+unit CRUD.Entidades.TipoPagamentos;
+
+interface
+
+uses
+  CRUD.Interfaces.Conexao, Data.DB, CRUD.Interfaces.TipoPagamentos,
+  CRUD.Interfaces.IdNome;
+
+type
+  TTipoPagamentos = class(TInterfacedObject, iTipoPagamentos)
+  private
+    FIdNome: iidNome<iTipoPagamentos>;
+    FQuery: iQuery;
+    FId: integer;
+    FNome: string;
+  public
+    constructor Create;
+    destructor Destroy; override;
+    class function New: iTipoPagamentos;
+    function FDQuery: iQuery;
+    function IdNome: iidNome<iTipoPagamentos>;
+    function Pesquisa: iPesquisaQuery;
+    procedure Pesquisar;
+    
+    function Todos: iPesquisaQuery;
+    function Registro(Field: String; aValue: string): iPesquisaQuery;
+    function Codigo(Field: String; aValue: string): iPesquisaQuery;
+    function DataSet(DataSource: TDataSource): iPesquisaQuery;
+  end;
+
+implementation
+
+uses
+  CRUD.Controller.FactoryQuery,
+  System.SysUtils,
+  CRUD.Entidades.IdNome, CRUD.Entidades.PesquisaQuery;
+
+{ TTipoPagamentos }
+
+function TTipoPagamentos.Codigo(Field, aValue: string): iPesquisaQuery;
+begin
+  result := self;
+  FQuery.Close.Clear.SQL(' SELECT * FROM TIPO_PAGAMANTOS ')
+    .Whereid(Field, aValue).Active
+end;
+
+function TTipoPagamentos.FDQuery: iQuery;
+begin
+  result := FQuery;
+end;
+
+function TTipoPagamentos.IdNome: iidNome<iTipoPagamentos>;
+begin
+  result := FIdNome;
+end;
+
+class function TTipoPagamentos.New: iTipoPagamentos;
+begin
+  result := self.Create;
+end;
+
+constructor TTipoPagamentos.Create;
+begin
+  FQuery := TControllerFactoryQuery.New.Query(nil);
+  FIdNome := TIdNome<iTipoPagamentos>.New(self)
+end;
+
+function TTipoPagamentos.DataSet(DataSource: TDataSource): iPesquisaQuery;
+begin
+  result := self;
+  DataSource.DataSet := FQuery.DataSet;
+end;
+
+destructor TTipoPagamentos.Destroy;
+begin
+
+  inherited;
+end;
+
+function TTipoPagamentos.Pesquisa: iPesquisaQuery;
+begin
+  result := self;
+end;
+
+procedure TTipoPagamentos.Pesquisar;
+begin
+  TPesquisaQuery.New(FQuery).Todos('TIPO_PAGAMANTOS')
+end;
+
+function TTipoPagamentos.Registro(Field, aValue: string): iPesquisaQuery;
+begin
+  result := self;
+  FQuery.Close.Clear.SQL(' SELECT * FROM TIPO_PAGAMANTOS ')
+    .Where(Field, aValue).Active;
+end;
+
+function TTipoPagamentos.Todos: iPesquisaQuery;
+begin
+  result := self;
+  FQuery.Close.Clear.SQL(' SELECT * FROM TIPO_PAGAMANTOS ').Active;
+end;
+
+end.

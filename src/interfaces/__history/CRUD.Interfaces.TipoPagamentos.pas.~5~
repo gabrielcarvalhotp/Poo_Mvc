@@ -1,0 +1,12 @@
+unit CRUD.Interfaces.TipoPagamentos;
+
+interface
+type
+iTipoPagamentos = interface
+  ['{2EBFE49A-3A8D-4CD9-9DE1-94CAD0272BB4}']
+  function Pesquisa: iPesquisaQuery;
+end;
+
+implementation
+
+end.

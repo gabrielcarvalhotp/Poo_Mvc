@@ -1,0 +1,119 @@
+unit Financeiro.View.TipoPagamentos;
+
+interface
+
+uses
+  Winapi.Windows,
+  Winapi.Messages,
+  System.SysUtils,
+  System.Variants,
+  System.Classes,
+  Vcl.Graphics,
+  Vcl.Controls,
+  Vcl.Forms,
+  Vcl.Dialogs,
+  Data.DB,
+  Vcl.StdCtrls,
+  Vcl.Grids,
+  Vcl.DBGrids,
+  Vcl.Buttons,
+  Vcl.ExtCtrls,
+  Vcl.WinXPanels,
+  Financeiro.View.CadastroPadrao,
+  CRUD.Interfaces.TipoPagamentos;
+
+type
+  TFrmCadTipoPgto = class(TFrmCadPadrao)
+    DSTipoPgto: TDataSource;
+    edId: TEdit;
+    Label1: TLabel;
+    Label2: TLabel;
+    edNome: TEdit;
+    procedure FormCreate(Sender: TObject);
+    procedure BitBtnIncluirPesquisaClick(Sender: TObject);
+    procedure BitBtnAlterarPesquisaClick(Sender: TObject);
+    procedure BitBtnExcluirPesquisaClick(Sender: TObject);
+    procedure BitBtnSalvarCadastroClick(Sender: TObject);
+  private
+    { Private declarations }
+    FStatus: string;
+    FTipoPgto: iTipoPagamentos;
+    procedure ClearComponents;
+  public
+    { Public declarations }
+  end;
+
+implementation
+
+uses
+  CRUD.Controller.TipoPgto,
+  CRUD.Controller.Utilitarios;
+
+{$R *.dfm}
+
+procedure TFrmCadTipoPgto.BitBtnAlterarPesquisaClick(Sender: TObject);
+begin
+  inherited;
+  FStatus := TUtilitarios.Edit;
+  edId.Text := FTipoPgto.FDQuery.FieldByName('ID');
+  edNome.Text := FTipoPgto.FDQuery.FieldByName('NOME');
+end;
+
+procedure TFrmCadTipoPgto.BitBtnExcluirPesquisaClick(Sender: TObject);
+var
+  id: string;
+begin
+  inherited;
+  if MessageDlg('Deseja deletar?', mtConfirmation, [mbYes, mbNo], 0) = mrYes
+  then
+  begin
+    id := FTipoPgto.FDQuery.FieldByName('ID');
+    TControllerTipoPgto.DAO.DeleteIdNome(id);
+
+    CardPanelPrincipal.ActiveCard := CardPesquisa;
+    FTipoPgto.Pesquisa.Todos('TIPO_PAGAMANTOS').DataSet(DSTipoPgto);
+    ClearComponents;
+  end;
+end;
+
+procedure TFrmCadTipoPgto.BitBtnIncluirPesquisaClick(Sender: TObject);
+begin
+  inherited;
+  ClearComponents;
+  FStatus := TUtilitarios.Insert;
+end;
+
+procedure TFrmCadTipoPgto.BitBtnSalvarCadastroClick(Sender: TObject);
+begin
+  inherited;
+  if MessageDlg('Deseja salvar?', mtConfirmation, [mbYes, mbNo], 0) = mrYes then
+  begin
+    FTipoPgto.IdNome.Nome(edNome.Text);
+
+    if FStatus = TUtilitarios.Insert then
+      TControllerTipoPgto.DAO.CreateIdNome(FTipoPgto)
+    else if FStatus = TUtilitarios.Edit then
+    begin
+      FTipoPgto.IdNome.id(edId.Text);
+      TControllerTipoPgto.DAO.EditIdNome(FTipoPgto);
+    end;
+
+    CardPanelPrincipal.ActiveCard := CardPesquisa;
+    FTipoPgto.Pesquisa.Todos('TIPO_PAGAMANTOS').DataSet(DSTipoPgto);
+    ClearComponents;
+  end;
+end;
+
+procedure TFrmCadTipoPgto.ClearComponents;
+begin
+  TUtilitarios.ClearComponentes.ClearEdit(edId).ClearEdit(edNome)
+end;
+
+procedure TFrmCadTipoPgto.FormCreate(Sender: TObject);
+begin
+  inherited;
+  FTipoPgto := TControllerTipoPgto.CriarTipoPgto;
+  FTipoPgto.Pesquisa.Todos.DataSet(DSTipoPgto)
+end;
+
+end.

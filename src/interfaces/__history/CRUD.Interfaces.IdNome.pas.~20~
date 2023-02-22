@@ -1,0 +1,27 @@
+unit CRUD.Interfaces.IdNome;
+
+interface
+
+uses
+  CRUD.Interfaces.Conexao;
+
+type
+  iIdNome = interface
+    ['{9DBD2E87-6BD0-479E-8F65-2BE25E1815E1}']
+    function Id(aValue: string): iIdNome; overload;
+    function Id: integer; overload;
+    function Nome(aValue: string): iIdNome; overload;
+    function Nome: string; overload;
+    function &End: iInterface;
+  end;
+
+  iDAOIdNome = interface
+    ['{9E70412F-D539-41DF-9902-054BFB76A4E5}']
+    procedure CreateIdNome(aValue: iIdNome);
+    procedure EditIdNome(aValue: iIdNome);
+    procedure DeleteIdNome(aValue: string);
+  end;
+
+implementation
+
+end.

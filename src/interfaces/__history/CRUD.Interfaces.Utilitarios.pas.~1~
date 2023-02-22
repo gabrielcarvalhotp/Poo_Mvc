@@ -1,0 +1,7 @@
+unit CRUD.Interfaces.Utilitarios;
+
+interface
+
+implementation
+
+end.

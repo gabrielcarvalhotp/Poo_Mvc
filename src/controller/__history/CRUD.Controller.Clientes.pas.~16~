@@ -1,0 +1,52 @@
+unit CRUD.Controller.Clientes;
+
+interface
+
+uses
+  CRUD.Interfaces.Clientes, CRUD.model.Status;
+
+type
+  TControllerCliente = class
+  private
+  public
+   class function CriarCliente: iClientes;
+   class function ClearComponentes : iClearEdit;
+   class function DAO : iDAO;
+   class function Insert : string; 
+   class function Edit : string;
+  end;
+
+implementation
+
+uses
+  CRUD.Entidades.Clientes, CRUD.Model.Clear, CRUD.DAO.Clientes;
+
+
+{ TControllerCliente }
+
+class function TControllerCliente.ClearComponentes: iClearEdit;
+begin
+  result := TClearComp.New;
+end;
+
+class function TControllerCliente.CriarCliente: iClientes;
+begin
+  result := TClientes.New;
+end;
+
+class function TControllerCliente.DAO : iDAO;
+begin
+  result := TDAOClientes.New;
+end;
+
+class function TControllerCliente.Edit: string;
+begin
+  result := TStatus.edit;
+end;
+
+class function TControllerCliente.Insert: string;
+begin
+  result := TStatus.insert;
+end;
+
+end.
